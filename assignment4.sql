@@ -10,12 +10,23 @@ ON Employee.ID = Trip.Emp_ID
 WHERE TO_CHAR(Trip.Dep_Date, 'D') = 6;
 
 -- Determine and print the total number of employees who returned from a trip during the last weekend.
--- sysdate = current time
--- (Return_Date, 'd') = 6 OR 7 OR 1 (Weekend day) && sysdate - Return_Date <= 7
-SELECT Count(Emp_ID) FROM Trip WHERE (TO_CHAR(Return_Date, 'd') = 1 OR TO_CHAR(Return_Date, 'd') >= 6) AND ((sysdate - Trip.Return_Date) <= 10 AND (sysdate - Trip.Return_Date) >= 0);
+
+SELECT Count(Emp_ID) 
+FROM Trip 
+WHERE (TO_CHAR(Return_Date, 'd') = 1 OR TO_CHAR(Return_Date, 'd') >= 6) 
+    AND ((sysdate - Trip.Return_Date) <= 10 
+        AND (sysdate - Trip.Return_Date) >= 0);
 
 -- For all the receipts that were submitted in 2017, print the total amount for each expense type.  
 -- The expense type must be spelled out rather than printing "T" or "H" or "M".  That is, 
 -- print the total "Transportation" cost, total "Hotel" cost, and total "Meals" cost incurred in 2017.
 
-SELECT DECODE(Expense.Type, 'T ', 'Transportation', 'H ', 'Hotel', 'M ', 'Meals'), SUM(Amount) FROM Expense WHERE TO_CHAR(Submitted, 'YYYY') = 2017 GROUP BY Expense.Type;
+SELECT DECODE(Expense.Type, 'T ', 'Transportation', 'H ', 'Hotel', 'M ', 'Meals'), SUM(Amount) 
+FROM Expense 
+WHERE TO_CHAR(Submitted, 'YYYY') = 2017 
+    GROUP BY Expense.Type;
+
+-- For every employee show the total number of trips he/she has taken.  
+-- The output must show employee names and corresponding number of trips.  
+-- If an employee has not taken any trip, print the employee's name and 0 (zero) next to his name.
+SELECT Employee.Name, NVL(COUNT(Trip.ID), 0) FROM Employee LEFT JOIN Trip ON Employee.ID = Trip.Emp_ID GROUP BY Employee.Name ORDER BY Employee.Name; 
