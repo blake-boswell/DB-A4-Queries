@@ -11,12 +11,12 @@ ON Employee.ID = Trip.Emp_ID
 WHERE TO_CHAR(Trip.Dep_Date, 'D') = 6;
 
 -- Q2
--- Determine and print the total number of employees who returned from a trip during the last weekend.
+-- Determine and print the total number of employees who returned Saturday or Sunday (not Friday) within the last seven days from the current date 
 
 SELECT Count(Emp_ID) 
 FROM Trip 
-WHERE (TO_CHAR(Return_Date, 'd') = 1 OR TO_CHAR(Return_Date, 'd') >= 6) 
-    AND ((sysdate - Trip.Return_Date) <= 10 
+WHERE (TO_CHAR(Return_Date, 'd') = 1 OR TO_CHAR(Return_Date, 'd') = 7) 
+    AND ((sysdate - Trip.Return_Date) <= 7 
         AND (sysdate - Trip.Return_Date) >= 0);
 
 -- Q3
