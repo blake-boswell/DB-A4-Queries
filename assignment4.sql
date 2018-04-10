@@ -45,7 +45,8 @@ CREATE VIEW Defaulters AS (
         ON Trip.Emp_ID = Employee.ID 
         JOIN Expense 
         ON Trip.ID = Expense.Trip_ID 
-        WHERE Expense.Submitted > Trip.Return_Date + 10
+        WHERE Expense.Submitted > Trip.Return_Date + 10 
+        OR (Expense.Submitted IS NULL AND sysdate > Trip.Return_Date + 10)
 );
 
 -- Debug records for Query 5
